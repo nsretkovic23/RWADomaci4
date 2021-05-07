@@ -7,39 +7,55 @@ import {showPrilog, showOsvezenja, showFood, showNarudzbina} from './drawing'
 const FETCH_URL = "http://localhost:3000";
 
 export function searchForFood(hrana_input:HTMLInputElement, prilog_input:HTMLInputElement, osvezenje_input:HTMLInputElement, narudzbina_lbl:HTMLLabelElement, hrana_lbl:HTMLLabelElement, prilog_lbl:HTMLLabelElement, osvezenje_lbl:HTMLLabelElement){
-    const hrana1=fromEvent(hrana_input, "input")
-    .pipe(
-        debounceTime(500),
-        map((ev:InputEvent) => (<HTMLInputElement>ev.target).value),
-        filter((text) => text.length >= 4),
-        switchMap( text => getFood(text, hrana_lbl)),
-        map(text => text[0])
-        
-    );
+
+    const hrana1=hranaInputObs(hrana_input, hrana_lbl)
     hrana1.subscribe((hrana:IHrana) => showFood(hrana, hrana_lbl));
 
-    const prilog1=fromEvent(prilog_input, "input")
-    .pipe(
-        debounceTime(500),
-        map((ev:InputEvent) => (<HTMLInputElement>ev.target).value),
-        filter((text) => text.length >= 4),
-        switchMap( text => getPrilog(text, prilog_lbl)),
-        map(prilog => prilog[0])
-    );
+    const prilog1=prilogInputObs(prilog_input, prilog_lbl)
     prilog1.subscribe((prilog:IPrilog)=> showPrilog(prilog, prilog_lbl));
 
-    const pice1=fromEvent(osvezenje_input, "input")
-    .pipe(
-        debounceTime(500),
-        map((ev:InputEvent) => (<HTMLInputElement>ev.target).value),
-        filter((text) => text.length >= 3),
-        switchMap( text => getOsvezenje(text, osvezenje_lbl)),
-        map(osvezenje => osvezenje[0])
-    );
+    const pice1=piceInputObs(osvezenje_input, osvezenje_lbl)
     pice1.subscribe((pice:IOsvezenje) => showOsvezenja(pice, osvezenje_lbl));   
 
     sastaviNarudzbinu(hrana1, prilog1, pice1, narudzbina_lbl);
 }
+
+function hranaInputObs(inputEl:HTMLInputElement, labelEl:HTMLLabelElement){
+    return fromEvent(inputEl, "input")
+    .pipe(
+        debounceTime(500),
+        map((ev:InputEvent) => (<HTMLInputElement>ev.target).value),
+        filter((text) => text.length >= 4),
+        switchMap( text => getFood(text, labelEl)),
+        map(text => text[0])
+        
+    );
+}
+
+function prilogInputObs(inputEl:HTMLInputElement, labelEl:HTMLLabelElement){
+    return fromEvent(inputEl, "input")
+    .pipe(
+        debounceTime(500),
+        map((ev:InputEvent) => (<HTMLInputElement>ev.target).value),
+        filter((text) => text.length >= 4),
+        switchMap( text => getPrilog(text, labelEl)),
+        map(text => text[0])
+        
+    );
+}
+
+function piceInputObs(inputEl:HTMLInputElement, labelEl:HTMLLabelElement){
+    return fromEvent(inputEl, "input")
+    .pipe(
+        debounceTime(500),
+        map((ev:InputEvent) => (<HTMLInputElement>ev.target).value),
+        filter((text) => text.length >= 4),
+        switchMap( text => getOsvezenje(text, labelEl)),
+        map(text => text[0])
+        
+    );
+}
+
 
 function sastaviNarudzbinu(hrana1:Observable<IHrana>, prilog1:Observable<IPrilog>, pice1:Observable<IOsvezenje>, narudzbina_lbl:HTMLLabelElement){
 
