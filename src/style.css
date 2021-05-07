@@ -1,0 +1,12 @@
+
+.unosDiv{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.narudzbinaDiv{
+    display: flex;
+    justify-content: center;
+    margin:20px;
+}

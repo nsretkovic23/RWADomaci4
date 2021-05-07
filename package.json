@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "webpack --watch --config webpack.config.js"
+    "watch": "webpack --watch --config webpack.config.js",
+    "api": "json-server --watch db.json"
   },
   "repository": {
     "type": "git",
@@ -22,5 +23,9 @@
     "typescript": "^4.2.4",
     "webpack": "^5.33.2",
     "webpack-cli": "^4.6.0"
+  },
+  "dependencies": {
+    "json-server": "^0.16.3",
+    "rxjs": "^7.0.0"
   }
 }
